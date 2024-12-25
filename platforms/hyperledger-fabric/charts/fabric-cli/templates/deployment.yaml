@@ -49,9 +49,11 @@ spec:
       - name: certificates
         emptyDir:
           medium: Memory
+      {{- if eq .Values.global.vault.type "hashicorp" }}
       - name: scripts-volume
         configMap:
           name: bevel-vault-script
+      {{- end }}
       - name: package-manager
         configMap:
           name: package-manager
@@ -219,9 +221,11 @@ spec:
           mountPath: "/etc/ssl/certs/"
           readOnly: true
         {{ end }}
+        {{- if eq .Values.global.vault.type "hashicorp" }}
         - name: scripts-volume
           mountPath: /scripts/bevel-vault.sh
           subPath: bevel-vault.sh
+        {{- end }}
         - name: package-manager
           mountPath: /scripts/package-manager.sh
           subPath: package-manager.sh

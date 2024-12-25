@@ -36,5 +36,7 @@ provisioner: pd.csi.storage.gke.io
 provisioner: k8s.io/minikube-hostpath
 {{- else if eq .Values.global.cluster.provider "azure" }}
 provisioner: disk.csi.azure.com
+{{- else if eq .Values.global.cluster.provider "k3s" }}
+provisioner: driver.longhorn.io
 {{- end -}}
 {{- end -}}

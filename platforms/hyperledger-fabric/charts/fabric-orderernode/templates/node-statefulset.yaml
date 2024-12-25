@@ -71,9 +71,11 @@ spec:
             - key: syschannel-genesis_base64
               path: genesis.block.base64
       {{ end  }}
+      {{- if eq .Values.global.vault.type "hashicorp" }}
       - name: scripts-volume
         configMap:
           name: bevel-vault-script
+      {{- end }}
       initContainers:
       - name: kafka-healthcheck
         image: {{ .Values.image.healthCheck }}
@@ -279,9 +281,11 @@ spec:
           mountPath: "/etc/ssl/certs/"
           readOnly: true
         {{ end }}
+        {{- if eq .Values.global.vault.type "hashicorp" }}
         - name: scripts-volume
           mountPath: /scripts/bevel-vault.sh
           subPath: bevel-vault.sh
+        {{- end }}
       containers:
       - name: fabric-orderer
         image: {{ .Values.image.orderer }}:{{ .Values.global.version }}

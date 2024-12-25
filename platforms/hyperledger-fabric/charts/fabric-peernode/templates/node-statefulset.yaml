@@ -208,9 +208,11 @@ spec:
         {{ end }}
         - name: certificates
           mountPath: /secret
+        {{- if eq .Values.global.vault.type "hashicorp" }}
         - name: scripts-volume
           mountPath: /scripts/bevel-vault.sh
           subPath: bevel-vault.sh
+        {{- end }}
       containers:
       - name: couchdb
         image: {{ .Values.image.couchdb }}:{{ .Values.global.version }}
@@ -356,9 +358,11 @@ spec:
           items:
             - key: mspConfig
               path: mspConfig
+      {{- if eq .Values.global.vault.type "hashicorp" }}
       - name: scripts-volume
         configMap:
           name: bevel-vault-script
+      {{- end }}
   volumeClaimTemplates:
   #Lables are not being taken by Kubernetes as it dynamically creates PVC
   - metadata:

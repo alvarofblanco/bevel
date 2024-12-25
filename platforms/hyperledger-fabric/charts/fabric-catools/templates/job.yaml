@@ -97,9 +97,11 @@ spec:
           items:
             - key: store-vault-users.sh
               path: store-vault-users.sh
+      {{- if eq .Values.global.vault.type "hashicorp" }}
       - name: scripts-volume
         configMap:
           name: bevel-vault-script
+      {{- end }}
       - name: package-manager
         configMap:
           name: package-manager
@@ -287,6 +289,8 @@ spec:
           - name: store-vault-users
             mountPath: /scripts/peer/store-vault-users.sh
             subPath: store-vault-users.sh
+          {{- if eq .Values.global.vault.type "hashicorp"}}
           - name: scripts-volume
             mountPath: /scripts/bevel-vault.sh
             subPath: bevel-vault.sh
+          {{- end }}
